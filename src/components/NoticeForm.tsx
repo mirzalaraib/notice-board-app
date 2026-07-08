@@ -48,7 +48,6 @@ export default function NoticeForm({ initialData, isEditing, noticeId }: NoticeF
     const clientErrors: string[] = [];
     if (!formData.title.trim()) clientErrors.push('Title is required');
     if (!formData.body.trim()) clientErrors.push('Body is required');
-    if (!formData.publishDate) clientErrors.push('Publish date is required');
 
     if (clientErrors.length > 0) {
       setErrors(clientErrors);
@@ -106,7 +105,7 @@ export default function NoticeForm({ initialData, isEditing, noticeId }: NoticeF
           name="title"
           value={formData.title}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-gray-900"
           placeholder="Enter notice title"
         />
       </div>
@@ -121,7 +120,7 @@ export default function NoticeForm({ initialData, isEditing, noticeId }: NoticeF
           rows={5}
           value={formData.body}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-vertical"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-vertical text-gray-900"
           placeholder="Enter notice body"
         />
       </div>
@@ -136,7 +135,7 @@ export default function NoticeForm({ initialData, isEditing, noticeId }: NoticeF
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-gray-900"
           >
             <option value="General">General</option>
             <option value="Exam">Exam</option>
@@ -153,7 +152,7 @@ export default function NoticeForm({ initialData, isEditing, noticeId }: NoticeF
             name="priority"
             value={formData.priority}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-gray-900"
           >
             <option value="Normal">Normal</option>
             <option value="Urgent">Urgent</option>
@@ -163,7 +162,7 @@ export default function NoticeForm({ initialData, isEditing, noticeId }: NoticeF
 
       <div>
         <label htmlFor="publishDate" className="block text-sm font-medium text-gray-700 mb-1">
-          Publish Date *
+          Publish Date
         </label>
         <input
           type="date"
@@ -171,7 +170,7 @@ export default function NoticeForm({ initialData, isEditing, noticeId }: NoticeF
           name="publishDate"
           value={formData.publishDate}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-gray-900"
         />
       </div>
 
@@ -185,7 +184,7 @@ export default function NoticeForm({ initialData, isEditing, noticeId }: NoticeF
           name="imageUrl"
           value={formData.imageUrl}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-gray-900"
           placeholder="https://example.com/image.jpg"
         />
       </div>

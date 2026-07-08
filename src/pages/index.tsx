@@ -98,7 +98,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const notices = await prisma.notice.findMany({
       orderBy: [
-        { priority: 'asc' },
+        { priority: 'desc' },
         { publishDate: 'desc' },
       ],
     });

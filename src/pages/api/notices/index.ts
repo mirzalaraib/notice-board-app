@@ -27,7 +27,7 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse<ResponseData>
   try {
     const notices = await prisma.notice.findMany({
       orderBy: [
-        { priority: 'asc' },  // 'Urgent' < 'Normal' alphabetically
+        { priority: 'desc' }, // 'Urgent' priority comes first (defined second in schema enum)
         { publishDate: 'desc' },
       ],
     });
