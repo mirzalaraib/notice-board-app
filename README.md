@@ -5,7 +5,7 @@ A full-stack Notice Board application built with Next.js (Pages Router), Prisma,
 ## Tech Stack
 
 - **Framework**: Next.js (Pages Router)
-- **Database**: PostgreSQL (local) / Neon or Supabase (production)
+- **Database**: PostgreSQL (local) → Neon Cloud (production)
 - **ORM**: Prisma
 - **Styling**: Tailwind CSS
 - **Hosting**: Vercel (Hobby tier)
@@ -22,15 +22,17 @@ A full-stack Notice Board application built with Next.js (Pages Router), Prisma,
 - ✅ **Responsive design** — works on phone and desktop
 - ✅ **Image support** — optional image URL for notices
 
-## How to Run Locally
+## Local Setup & Testing (PostgreSQL)
+
+The application was first developed and tested locally using PostgreSQL.
 
 ### Prerequisites
 
 - Node.js 18+
-- PostgreSQL installed and running
+- PostgreSQL installed and running locally
 - npm or yarn
 
-### Setup Steps
+### Local Setup Steps
 
 1. **Clone the repository**
 
@@ -45,17 +47,18 @@ cd notice-board-app
 npm install
 ```
 
-3. **Set up environment variables**
+3. **Set up local environment variables**
 
 Create a `.env` file in the root directory:
 
 ```env
+# Local PostgreSQL
 DATABASE_URL="postgresql://postgres:your_password@localhost:5432/notice_board?schema=public"
 ```
 
 > Replace `your_password` with your PostgreSQL password.
 
-4. **Create the database**
+4. **Create the local database**
 
 ```bash
 psql -U postgres -c "CREATE DATABASE notice_board;"
@@ -77,15 +80,102 @@ npm run dev
 
 Navigate to [http://localhost:3000](http://localhost:3000)
 
+### What Was Tested Locally
+
+| Feature | Test Performed | Result |
+|---------|---------------|--------|
+| Create Notice | POST request via form and Postman | ✅ 201 Created |
+| Read Notices | List page loads with all notices | ✅ 200 OK |
+| Read Single Notice | GET by ID | ✅ 200 OK |
+| Update Notice | Edit form pre-filled, PUT request | ✅ 200 OK |
+| Delete Notice | Confirmation dialog, DELETE request | ✅ 200 OK |
+| Server Validation | Empty title/body, invalid date | ✅ 400 Bad Request |
+| Wrong HTTP Method | PATCH on GET-only route | ✅ 405 Method Not Allowed |
+| 404 Handling | Non-existent notice ID | ✅ 404 Not Found |
+| Urgent Ordering | Urgent notices above Normal ones | ✅ Correct order |
+| Responsive Design | Mobile, Tablet, Desktop viewports | ✅ Grid adapts 1→2→3 cols |
+| Data Persistence | Refresh page, restart server | ✅ Data preserved |
+
+## Cloud Migration (Neon)
+
+After local testing, the database was migrated to **Neon** (cloud PostgreSQL) for production deployment.
+
+### Why Neon?
+
+The assignment PDF recommends:
+- **Neon** (recommended) — PostgreSQL, 500MB free tier, no credit card required
+- **Supabase** — PostgreSQL, 500MB free tier
+- **TiDB Cloud** — MySQL-compatible, 5GB free tier
+
+Neon was chosen because:
+- ✅ PostgreSQL compatible (same as local setup)
+- ✅ Free tier with 500MB storage
+- ✅ No credit card required
+- ✅ Easy connection with Prisma
+- ✅ Serverless — scales to zero when not in use
+
+### Migration Steps
+
+1. **Create a Neon account**
+
+   - Go to [https://neon.tech](https://neon.tech)
+   - Sign up with GitHub
+   - Create a new project named `notice-board-db`
+
+2. **Get the connection string**
+
+   - In Neon Console → Project Dashboard → Click "Connect"
+   - Select **"Prisma"** from the dropdown
+   - Copy the connection string:
+   ```
+   postgresql://username:password@ep-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require
+   ```
+
+3. **Update `.env` file**
+
+   ```env
+   # Local PostgreSQL (for local development)
+   # DATABASE_URL="postgresql://postgres:your_password@localhost:5432/notice_board?schema=public"
+
+   # Neon Cloud PostgreSQL (for production)
+   DATABASE_URL="postgresql://username:password@ep-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
+   ```
+
+4. **Run Prisma migration on Neon**
+
+   ```bash
+   npx prisma migrate dev --name init
+   ```
+
+5. **Verify in Neon Dashboard**
+
+   - Go to Neon Console → Tables tab
+   - The `Notice` table should be visible with all the columns
+   - Data created through the app appears in real-time
+
+### Switching Between Local and Cloud
+
+Comment/uncomment the relevant line in `.env`:
+
+```env
+# For local development
+DATABASE_URL="postgresql://postgres:your_password@localhost:5432/notice_board?schema=public"
+
+# For cloud/production testing
+# DATABASE_URL="postgresql://username:password@ep-xxx.neon.tech/neondb?sslmode=require"
+```
+
+> ⚠️ The `.env` file is in `.gitignore` and will NOT be pushed to GitHub for security reasons.
+
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/notices` | List all notices (Urgent first) |
-| POST | `/api/notices` | Create a new notice |
-| GET | `/api/notices/[id]` | Get a single notice |
-| PUT | `/api/notices/[id]` | Update a notice |
-| DELETE | `/api/notices/[id]` | Delete a notice |
+| Method | Endpoint | Description | Status Codes |
+|--------|----------|-------------|-------------|
+| GET | `/api/notices` | List all notices (Urgent first) | 200 |
+| POST | `/api/notices` | Create a new notice | 201, 400 |
+| GET | `/api/notices/[id]` | Get a single notice | 200, 404 |
+| PUT | `/api/notices/[id]` | Update a notice | 200, 400, 404 |
+| DELETE | `/api/notices/[id]` | Delete a notice | 200, 404 |
 
 ## Deployment
 
@@ -93,14 +183,16 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 1. Push the code to a public GitHub repository
 2. Go to [vercel.com](https://vercel.com) and import the repository
-3. Add the `DATABASE_URL` environment variable in Vercel's dashboard
-4. Deploy (Vercel will automatically run `prisma migrate` during build)
+3. In Vercel dashboard → Project Settings → Environment Variables:
+   - Add `DATABASE_URL` = `postgresql://username:password@ep-xxx.neon.tech/neondb?sslmode=require`
+4. Deploy — Vercel will automatically build and run the migration
+
+After deployment, the app is publicly accessible at: `https://notice-board-app.vercel.app`
 
 ### Database for Production
 
-Use a hosted PostgreSQL database:
-- **Neon** (recommended, free tier) — https://neon.tech
-- **Supabase** (free tier) — https://supabase.com
+- **Neon** (used in this project) — https://neon.tech
+- **Supabase** (alternative) — https://supabase.com
 
 ## One Thing I Would Improve
 
@@ -114,6 +206,6 @@ This project was built with the assistance of AI (Claude by Anthropic) in the fo
 2. **Code generation**: AI generated the initial boilerplate for components, API routes, and pages.
 3. **Debugging**: AI assisted in troubleshooting build errors, database connection issues, and TypeScript type errors.
 4. **Code review**: AI reviewed the generated code for security issues and best practices.
-5. **Documentation**: AI helped write this README file.
+5. **Documentation**: AI helped write this README file and test plans.
 
 All AI-generated code was reviewed and tested by a human developer before deployment.
