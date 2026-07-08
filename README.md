@@ -37,7 +37,7 @@ The application was first developed and tested locally using PostgreSQL.
 1. **Clone the repository**
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/mirzalaraib/notice-board-app.git
 cd notice-board-app
 ```
 
@@ -126,9 +126,9 @@ Neon was chosen because:
 
    - In Neon Console → Project Dashboard → Click "Connect"
    - Select **"Prisma"** from the dropdown
-   - Copy the connection string:
+   - Copy the connection string (it will look like):
    ```
-   postgresql://username:password@ep-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require
+   postgresql://neondb_owner:password@ep-xxx.aws.neon.tech/neondb?sslmode=require
    ```
 
 3. **Update `.env` file**
@@ -137,8 +137,8 @@ Neon was chosen because:
    # Local PostgreSQL (for local development)
    # DATABASE_URL="postgresql://postgres:your_password@localhost:5432/notice_board?schema=public"
 
-   # Neon Cloud PostgreSQL (for production)
-   DATABASE_URL="postgresql://username:password@ep-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
+   # Neon Cloud PostgreSQL (for both local development and production)
+   DATABASE_URL="postgresql://neondb_owner:password@ep-xxx.aws.neon.tech/neondb?sslmode=require"
    ```
 
 4. **Run Prisma migration on Neon**
@@ -162,7 +162,7 @@ Comment/uncomment the relevant line in `.env`:
 DATABASE_URL="postgresql://postgres:your_password@localhost:5432/notice_board?schema=public"
 
 # For cloud/production testing
-# DATABASE_URL="postgresql://username:password@ep-xxx.neon.tech/neondb?sslmode=require"
+# DATABASE_URL="postgresql://neondb_owner:password@ep-xxx.neon.tech/neondb?sslmode=require"
 ```
 
 > ⚠️ The `.env` file is in `.gitignore` and will NOT be pushed to GitHub for security reasons.
@@ -184,10 +184,10 @@ DATABASE_URL="postgresql://postgres:your_password@localhost:5432/notice_board?sc
 1. Push the code to a public GitHub repository
 2. Go to [vercel.com](https://vercel.com) and import the repository
 3. In Vercel dashboard → Project Settings → Environment Variables:
-   - Add `DATABASE_URL` = `postgresql://username:password@ep-xxx.neon.tech/neondb?sslmode=require`
+   - Add `DATABASE_URL` = `postgresql://neondb_owner:password@ep-xxx.neon.tech/neondb?sslmode=require`
 4. Deploy — Vercel will automatically build and run the migration
 
-After deployment, the app is publicly accessible at: `https://notice-board-app.vercel.app`
+After deployment, the app is publicly accessible at: **https://notice-board-app-five.vercel.app**
 
 ### Database for Production
 
