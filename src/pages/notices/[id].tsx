@@ -19,29 +19,33 @@ interface EditNoticeProps {
 export default function EditNotice({ notice, error }: EditNoticeProps) {
   return (
     <Layout>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Edit Notice</h1>
-        <p className="text-gray-600 mt-1">Update the notice details below.</p>
+      <div className="mb-8 animate-fade-in">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          ✏️ Edit Notice
+        </h1>
+        <p className="text-gray-600 text-lg">Update the notice details below.</p>
       </div>
       {error ? (
-        <div className="text-center py-16">
-          <div className="text-5xl mb-4">⚠️</div>
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Notice not found</h2>
-          <p className="text-gray-500">{error}</p>
+        <div className="text-center py-20 animate-fade-in">
+          <div className="text-7xl mb-6">⚠️</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-3">Notice not found</h2>
+          <p className="text-gray-600">{error}</p>
         </div>
       ) : notice ? (
-        <NoticeForm
-          initialData={{
-            title: notice.title,
-            body: notice.body,
-            category: notice.category,
-            priority: notice.priority,
-            publishDate: notice.publishDate,
-            imageUrl: notice.imageUrl || '',
-          }}
-          isEditing
-          noticeId={notice.id}
-        />
+        <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+          <NoticeForm
+            initialData={{
+              title: notice.title,
+              body: notice.body,
+              category: notice.category,
+              priority: notice.priority,
+              publishDate: notice.publishDate,
+              imageUrl: notice.imageUrl || '',
+            }}
+            isEditing
+            noticeId={notice.id}
+          />
+        </div>
       ) : null}
     </Layout>
   );

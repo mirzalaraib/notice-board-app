@@ -23,9 +23,15 @@ export default function NoticeCard({
   onDelete,
 }: NoticeCardProps) {
   const categoryColors: Record<string, string> = {
-    Exam: 'bg-purple-100 text-purple-800',
-    Event: 'bg-green-100 text-green-800',
-    General: 'bg-blue-100 text-blue-800',
+    Exam: 'bg-purple-100 text-purple-800 border-purple-200',
+    Event: 'bg-green-100 text-green-800 border-green-200',
+    General: 'bg-blue-100 text-blue-800 border-blue-200',
+  };
+
+  const categoryEmojis: Record<string, string> = {
+    Exam: '📚',
+    Event: '🎉',
+    General: '📌',
   };
 
   const formattedDate = new Date(publishDate).toLocaleDateString('en-US', {
@@ -35,9 +41,9 @@ export default function NoticeCard({
   });
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+    <div className="card-hover bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden animate-fade-in">
       {imageUrl && (
-        <div className="w-full h-48 overflow-hidden">
+        <div className="relative w-full h-48 overflow-hidden bg-gray-100">
           <img
             src={imageUrl}
             alt={title}
@@ -46,38 +52,40 @@ export default function NoticeCard({
               (e.target as HTMLImageElement).style.display = 'none';
             }}
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         </div>
       )}
-      <div className="p-5">
+      <div className="p-6">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           {priority === 'Urgent' && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800">
-              ● Urgent
+            <span className="animate-pulse-urgent inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800 border border-red-200">
+              🔥 Urgent
             </span>
           )}
           <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-              categoryColors[category] || categoryColors.General
-            }`}
+            className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border ${categoryColors[category] || categoryColors.General}`}
           >
-            {category}
+            <span>{categoryEmojis[category] || '📌'}</span>
+            <span>{category}</span>
           </span>
-          <span className="text-xs text-gray-500 ml-auto">{formattedDate}</span>
+          <span className="text-xs text-gray-500 ml-auto font-medium">📅 {formattedDate}</span>
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">{title}</h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">{body}</p>
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">{title}</h3>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">{body}</p>
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
           <Link
             href={`/notices/${id}`}
-            className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition-all hover:scale-105"
           >
-            Edit
+            <span>✏️</span>
+            <span>Edit</span>
           </Link>
           <button
             onClick={() => onDelete(id)}
-            className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 transition-all hover:scale-105"
           >
-            Delete
+            <span>🗑️</span>
+            <span>Delete</span>
           </button>
         </div>
       </div>

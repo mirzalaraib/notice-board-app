@@ -51,23 +51,24 @@ export default function Home({ notices }: HomeProps) {
 
   return (
     <Layout>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Notices</h1>
-        <p className="text-gray-600 mt-1">
-          {notices.length} notice{notices.length !== 1 ? 's' : ''} total
+      <div className="mb-8 animate-fade-in">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">📢 Notices</h1>
+        <p className="text-gray-600 text-lg">
+          {notices.length === 0 ? 'No notices yet' : `${notices.length} notice${notices.length !== 1 ? 's' : ''} total`}
         </p>
       </div>
 
       {notices.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="text-5xl mb-4">📭</div>
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">No notices yet</h2>
-          <p className="text-gray-500 mb-6">Get started by creating your first notice.</p>
+        <div className="text-center py-20 animate-fade-in">
+          <div className="text-7xl mb-6">📭</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-3">No notices yet</h2>
+          <p className="text-gray-600 mb-8 text-lg">Get started by creating your first notice.</p>
           <button
             onClick={() => router.push('/notices/new')}
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            className="btn-gradient inline-flex items-center gap-2 px-8 py-3 text-white font-semibold rounded-xl shadow-lg text-lg"
           >
-            + Create Notice
+            <span>+</span>
+            <span>Create Notice</span>
           </button>
         </div>
       ) : (
@@ -98,7 +99,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const notices = await prisma.notice.findMany({
       orderBy: [
-        { priority: 'desc' },
+        { priority: 'asc' },
         { publishDate: 'desc' },
       ],
     });
