@@ -84,6 +84,17 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse<ResponseData>
       errors.push('Priority must be one of: Normal, Urgent');
     }
 
+    if (imageUrl && typeof imageUrl === 'string' && imageUrl.trim().length > 0) {
+      try {
+        const url = new URL(imageUrl.trim());
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+          errors.push('Image URL must use http or https protocol');
+        }
+      } catch {
+        errors.push('Image URL is not a valid URL format');
+      }
+    }
+
     if (errors.length > 0) {
       return res.status(400).json({ success: false, error: errors.join('; ') });
     }

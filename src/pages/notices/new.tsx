@@ -4,15 +4,16 @@ import NoticeForm from '@/components/NoticeForm';
 export default function NewNotice() {
   return (
     <Layout>
-      <div className="mb-8 animate-fade-in">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-          ✨ Add New Notice
+      <div className="max-w-2xl mx-auto mb-8 text-center sm:text-left">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100 mb-3 animate-slide-in">
+          ✨ Publish
+        </div>
+        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 leading-none mb-3">
+          Create New Notice
         </h1>
-        <p className="text-gray-600 text-lg">Fill in the details below to create a new notice.</p>
+        <p className="text-slate-500 font-medium">Fill in the fields below to broadcast your announcement.</p>
       </div>
-      <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-        <NoticeForm />
-      </div>
+      <NoticeForm />
     </Layout>
   );
 }
